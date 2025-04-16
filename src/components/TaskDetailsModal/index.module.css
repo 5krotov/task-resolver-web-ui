@@ -1,0 +1,23 @@
+.name {
+  font-weight: 800;
+  font-size: 32px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.detailsGrid {
+  width: 100%;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  font-size: 14px;
+  column-gap: 16px;
+  row-gap: 8px;
+}
+
+.history {
+  & > h2 {
+    font-size: 18px;
+    font-weight: 800;
+  }
+}
