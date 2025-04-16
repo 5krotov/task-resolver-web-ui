@@ -1,4 +1,5 @@
 import { Task, TaskCreateParams, TasksSearchParams } from "@/models/task";
+import { Paginated } from "@/models/search";
 
 import { isTaskModel, isTasksModel } from "./models";
 import {
@@ -7,15 +8,22 @@ import {
   taskCreateParamsModelFromTaskCreateParams,
   taskFromTaskModel,
 } from "./mappers";
-import { Paginated } from "@/models/search";
+import { HttpTasksRepositoryConfig, fetchConfig } from "./config";
 
 export class HttpTasksRepository {
-  constructor(public baseUrl: string) {}
+  config: HttpTasksRepositoryConfig | null = null;
+
+  async getConfig() {
+    if (this.config !== null) return;
+    this.config = await fetchConfig();
+  }
 
   async getTasks(
     params: Partial<TasksSearchParams>,
   ): Promise<Paginated<Task[]>> {
-    const url = `${this.baseUrl}/task?${queryParamsFromTasksSearchParams(params)}`;
+    await this.getConfig();
+
+    const url = `${this.config!.baseUrl}/task?${queryParamsFromTasksSearchParams(params)}`;
     const [response] = await Promise.all([
       fetch(url),
       new Promise<void>((resolve) => setTimeout(() => resolve(), 500)),
@@ -31,7 +39,9 @@ export class HttpTasksRepository {
   }
 
   async createTask(params: TaskCreateParams): Promise<Task> {
-    const url = `${this.baseUrl}/task`;
+    await this.getConfig();
+
+    const url = `${this.config!.baseUrl}/task`;
     const [response] = await Promise.all([
       fetch(url, {
         method: "POST",

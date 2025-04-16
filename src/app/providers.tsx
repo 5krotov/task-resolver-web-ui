@@ -6,17 +6,10 @@ import { HttpTasksRepository } from "@/repositories/tasks/http";
 
 import { useTasks } from "@/services/tasks";
 
-export function Providers({
-  baseApiUrl,
-  children,
-}: {
-  baseApiUrl: string;
-  children: React.ReactNode;
-}) {
-  const tasksRepo = new HttpTasksRepository(baseApiUrl);
+export function Providers({ children }: { children: React.ReactNode }) {
+  const tasksRepo = new HttpTasksRepository();
 
-  const initTasksRepo = useTasks((state) => state.init);
-  initTasksRepo({ tasksRepo });
+  useTasks((state) => state.init)({ tasksRepo });
 
   return <HeroUIProvider>{children}</HeroUIProvider>;
 }
