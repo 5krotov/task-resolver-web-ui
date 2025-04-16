@@ -31,9 +31,7 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${sedgwickAveDisplaySans.variable}`}
       >
-        <Providers baseApiUrl={process.env.BASE_REST_API_URL as string}>
-          {children}
-        </Providers>
+        <Providers>{children}</Providers>
       </body>
     </html>
   );
