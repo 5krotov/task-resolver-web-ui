@@ -19,6 +19,7 @@ export interface TasksData {
 
 export interface TasksState extends TasksData {
   init: (data: Partial<TasksData>) => void;
+
   fetchWith: (params: Partial<TasksSearchParams>) => Promise<void>;
 
   clearCreateTaskForm: () => void;
